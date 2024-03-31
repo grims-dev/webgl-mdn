@@ -8,7 +8,7 @@ import "./types.d.js";
 function initBuffers(gl) {
     return {
         position: initPositionBuffer(gl),
-        color: initColorBuffer(gl),
+        textureCoord: initTextureBuffer(gl),
         indices: initIndexBuffer(gl),
     }
 }
@@ -78,6 +78,40 @@ function initColorBuffer(gl) {
 
     return colorBuffer;
 }
+
+/**
+ * Creates a buffer of textures.
+ * @param {WebGLRenderingContext} gl
+ * @returns {Buffer}
+ */
+function initTextureBuffer(gl) {
+    const textureCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+
+    const textureCoordinates = [
+        // Front
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Back
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Top
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Bottom
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Right
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Left
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    ];
+
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(textureCoordinates),
+        gl.STATIC_DRAW,
+    );
+
+    return textureCoordBuffer;
+}
+
 
 /**
  * Creates a buffer of indices.
