@@ -1,9 +1,8 @@
 import "./types.d.js";
 
 /**
- * Get the position buffer from the context.
+ * Create all the relevant buffers for the given context.
  * @param {WebGLRenderingContext} gl
- * Context from which to grab the position buffer.
  * @returns {Buffers}
  */
 function initBuffers(gl) {
@@ -15,9 +14,8 @@ function initBuffers(gl) {
 }
 
 /**
- * Initialise the position buffer on a context.
+ * Creates a buffer of positions.
  * @param {WebGLRenderingContext} gl
- * Context to create buffer on.
  * @returns {Buffer}
  */
 function initPositionBuffer(gl) {
@@ -51,9 +49,8 @@ function initPositionBuffer(gl) {
 }
 
 /**
- * Initialise the position buffer on a context.
+ * Creates a buffer of colours.
  * @param {WebGLRenderingContext} gl
- * Context to create buffer on.
  * @returns {Buffer}
  */
 function initColorBuffer(gl) {
@@ -83,7 +80,7 @@ function initColorBuffer(gl) {
 }
 
 /**
- * Creates a buffer of the indices indexes.
+ * Creates a buffer of indices.
  * @param {WebGLRenderingContext} gl
  * @returns {Buffer}
  */
