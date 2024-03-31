@@ -81,9 +81,18 @@ function drawScene(gl, programInfo, buffers, texture, cubeRotation) {
         [1, 0, 0],
     );
 
+    // Generate a normal matrix which will be delivered to the shader
+    // @ts-ignore
+    const normalMatrix = mat4.create();
+    // @ts-ignore
+    mat4.invert(normalMatrix, modelViewMatrix);
+    // @ts-ignore
+    mat4.transpose(normalMatrix, normalMatrix);
+
     // Set attributes from buffers
     setPositionAttribute(gl, buffers, programInfo);
     setTextureAttribute(gl, buffers, programInfo);
+    setNormalAttribute(gl, buffers, programInfo);
 
     // Tell WebGL to use our program when drawing
     gl.useProgram(programInfo.program);
@@ -99,6 +108,11 @@ function drawScene(gl, programInfo, buffers, texture, cubeRotation) {
         false,
         modelViewMatrix,
     );
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocations.normalMatrix,
+        false,
+        normalMatrix
+    )
 
     // Tell WebGL we want to affect texture unit 0
     gl.activeTexture(gl.TEXTURE0);
@@ -166,6 +180,30 @@ function setTextureAttribute(gl, buffers, programInfo) {
         offset,
     );
     gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+}
+
+/**
+ *
+ * @param {WebGLRenderingContext} gl
+ * @param {Buffers} buffers
+ * @param {ProgramInfo} programInfo
+ */
+function setNormalAttribute(gl, buffers, programInfo) {
+    const numComponents = 3;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexNormal,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset,
+    );
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexNormal);
 }
 
 export { drawScene };

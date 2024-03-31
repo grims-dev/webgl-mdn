@@ -8,6 +8,7 @@ import "./types.d.js";
 function initBuffers(gl) {
     return {
         position: initPositionBuffer(gl),
+        normal: initNormalBuffer(gl),
         textureCoord: initTextureBuffer(gl),
         indices: initIndexBuffer(gl),
     }
@@ -174,6 +175,44 @@ function initIndexBuffer(gl) {
     );
 
     return indexBuffer;
+}
+
+/**
+ * Creates a buffer of surface normals.
+ * @param {WebGLRenderingContext} gl
+ * @returns {Buffer}
+ */
+function initNormalBuffer(gl) {
+    const normalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+
+    const vertexNormals = [
+        // Front
+        0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+
+        // Back
+        0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
+
+        // Top
+        0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+
+        // Bottom
+        0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0,
+
+        // Right
+        1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+
+        // Left
+        -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+    ];
+
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(vertexNormals),
+        gl.STATIC_DRAW,
+    );
+
+    return normalBuffer;
 }
 
 export { initBuffers };
