@@ -4,6 +4,7 @@
  * @typedef {Object} Buffers
  * @property {Buffer} position
  * @property {Buffer} color
+ * @property {Buffer} indices
  *
  * @typedef {Object} ProgramInfo
  * @property {WebGLProgram} program - The WebGL program.

@@ -5,11 +5,11 @@ import "./types.d.js";
  * @param {WebGLRenderingContext} gl
  * @param {ProgramInfo} programInfo
  * @param {Buffers} buffers
- * @param {number} squareRotation
+ * @param {number} cubeRotation
  * Amount to rotate in radians
  * @returns {void}
  */
-function drawScene(gl, programInfo, buffers, squareRotation) {
+function drawScene(gl, programInfo, buffers, cubeRotation) {
     if (!(gl.canvas instanceof HTMLCanvasElement)) {
         console.error("Incorrect canvas type, must be HTMLCanvasElement");
         return;
@@ -55,13 +55,30 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
         [-0.0, 0.0, -6.0]
     ); // amount to translate
 
+    // Z rotation
     // @ts-ignore
     mat4.rotate(
         modelViewMatrix, // destination matrix
         modelViewMatrix, // matrix to rotate
-        squareRotation, // amount to rotate in radians
+        cubeRotation, // amount to rotate in radians
         [0, 0, 1],
-    ); // axis to rotate around
+    );
+    // Y rotation
+    // @ts-ignore
+    mat4.rotate(
+        modelViewMatrix, // destination matrix
+        modelViewMatrix, // matrix to rotate
+        cubeRotation * 0.7, // amount to rotate in radians
+        [0, 1, 0],
+    );
+    // X rotation
+    // @ts-ignore
+    mat4.rotate(
+        modelViewMatrix, // destination matrix
+        modelViewMatrix, // matrix to rotate
+        cubeRotation * 0.7, // amount to rotate in radians
+        [1, 0, 0],
+    );
 
     // Set attributes from buffers
     setPositionAttribute(gl, buffers, programInfo);
@@ -83,9 +100,10 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
     );
 
     {
+        const vertexCount = 36;
+        const type = gl.UNSIGNED_SHORT;
         const offset = 0;
-        const vertexCount = 4;
-        gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
 }
 
@@ -97,7 +115,7 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
  * @returns {void}
  */
 function setPositionAttribute(gl, buffers, programInfo) {
-    const numComponents = 2; // pull out 2 values per iteration
+    const numComponents = 3; // pull out 3 values per iteration
     const type = gl.FLOAT; // the data in the buffer is 32bit floats
     const normalize = false; // don't normalize
     const stride = 0; // how many bytes to get from one set of values to the next
