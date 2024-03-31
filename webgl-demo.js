@@ -178,7 +178,7 @@ function main() {
     const buffers = initBuffers(gl);
 
     // Load texture
-    const texture = loadTexture(gl, "./img/face.png");
+    const texture = loadTexture(gl, "./img/face.jpg");
     // Flip image pixels into the bottom-to-top order that WebGL expects.
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
