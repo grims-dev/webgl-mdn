@@ -4,6 +4,9 @@ import { drawScene } from "./draw-scene.js";
 
 main();
 
+let squareRotation = 0.0;
+let deltaTime = 0;
+
 /**
  * Initialise a shader program, so WebGL knows how to draw our data.
  * @param {WebGLRenderingContext} gl
@@ -150,6 +153,23 @@ function main() {
 
     const buffers = initBuffers(gl);
 
-    // Draw the scene
-    drawScene(gl, programInfo, buffers);
+    let then = 0;
+    // Draw the scene repeatedly
+    /**
+     * Recursive function for calling drawScene by requesting animation frames.
+     * @param {number} now
+     * Current time used in time calculation.
+     */
+    function render(now) {
+        now *= 0.001; // convert to seconds
+        deltaTime = now - then;
+        then = now;
+
+        // @ts-ignore
+        drawScene(gl, programInfo, buffers, squareRotation);
+        squareRotation += deltaTime;
+
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
 }

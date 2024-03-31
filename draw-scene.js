@@ -5,9 +5,11 @@ import "./types.d.js";
  * @param {WebGLRenderingContext} gl
  * @param {ProgramInfo} programInfo
  * @param {Buffers} buffers
+ * @param {number} squareRotation
+ * Amount to rotate in radians
  * @returns {void}
  */
-function drawScene(gl, programInfo, buffers) {
+function drawScene(gl, programInfo, buffers, squareRotation) {
     if (!(gl.canvas instanceof HTMLCanvasElement)) {
         console.error("Incorrect canvas type, must be HTMLCanvasElement");
         return;
@@ -50,8 +52,16 @@ function drawScene(gl, programInfo, buffers) {
     mat4.translate(
         modelViewMatrix, // destination matrix
         modelViewMatrix, // matrix to translate
-        [-0.0, 0.0, -6.0],
+        [-0.0, 0.0, -6.0]
     ); // amount to translate
+
+    // @ts-ignore
+    mat4.rotate(
+        modelViewMatrix, // destination matrix
+        modelViewMatrix, // matrix to rotate
+        squareRotation, // amount to rotate in radians
+        [0, 0, 1],
+    ); // axis to rotate around
 
     // Set attributes from buffers
     setPositionAttribute(gl, buffers, programInfo);
