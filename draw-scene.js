@@ -53,9 +53,9 @@ function drawScene(gl, programInfo, buffers) {
         [-0.0, 0.0, -6.0],
     ); // amount to translate
 
-    // Tell WebGL how to pull out the positions from the position
-    // buffer into the vertexPosition attribute.
+    // Set attributes from buffers
     setPositionAttribute(gl, buffers, programInfo);
+    setColorAttribute(gl, buffers, programInfo);
 
     // Tell WebGL to use our program when drawing
     gl.useProgram(programInfo.program);
@@ -103,6 +103,31 @@ function setPositionAttribute(gl, buffers, programInfo) {
         offset,
     );
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+}
+
+/**
+ * Tell WebGL how to pull out the colors from the color buffer into the vertexColor attribute.
+ * @param {WebGLRenderingContext} gl
+ * @param {Buffers} buffers
+ * @param {ProgramInfo} programInfo
+ * @returns {void}
+ */
+function setColorAttribute(gl, buffers, programInfo) {
+    const numComponents = 4;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexColor,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset,
+    );
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
 export { drawScene };
